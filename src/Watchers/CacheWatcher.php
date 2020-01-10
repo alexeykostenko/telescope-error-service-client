@@ -1,10 +1,10 @@
 <?php
 
-namespace Laravel\Telescope\Watchers;
+namespace PDFfiller\TelescopeClient\Watchers;
 
 use Illuminate\Support\Str;
-use Laravel\Telescope\Telescope;
-use Laravel\Telescope\IncomingEntry;
+use PDFfiller\TelescopeClient\Telescope;
+use PDFfiller\TelescopeClient\IncomingEntry;
 use Illuminate\Cache\Events\CacheHit;
 use Illuminate\Cache\Events\KeyWritten;
 use Illuminate\Cache\Events\CacheMissed;

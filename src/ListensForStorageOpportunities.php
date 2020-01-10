@@ -1,12 +1,12 @@
 <?php
 
-namespace Laravel\Telescope;
+namespace PDFfiller\TelescopeClient;
 
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\Events\JobExceptionOccurred;
-use Laravel\Telescope\Contracts\EntriesRepository;
+use PDFfiller\TelescopeClient\Contracts\EntriesRepository;
 
 trait ListensForStorageOpportunities
 {

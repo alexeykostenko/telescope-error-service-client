@@ -1,14 +1,14 @@
 <?php
 
-namespace Laravel\Telescope\Watchers;
+namespace PDFfiller\TelescopeClient\Watchers;
 
 use Closure;
 use ReflectionFunction;
 use Illuminate\Support\Str;
-use Laravel\Telescope\Telescope;
-use Laravel\Telescope\ExtractTags;
-use Laravel\Telescope\IncomingEntry;
-use Laravel\Telescope\ExtractProperties;
+use PDFfiller\TelescopeClient\Telescope;
+use PDFfiller\TelescopeClient\ExtractTags;
+use PDFfiller\TelescopeClient\IncomingEntry;
+use PDFfiller\TelescopeClient\ExtractProperties;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
@@ -92,7 +92,7 @@ class EventWatcher extends Watcher
 
                 return $this->formatClosureListener($listener);
             })->reject(function ($listener) {
-                return Str::contains($listener, 'Laravel\\Telescope');
+                return Str::contains($listener, 'PDFfiller\\TelescopeClient');
             })->map(function ($listener) {
                 if (Str::contains($listener, '@')) {
                     $queued = in_array(ShouldQueue::class, class_implements(explode('@', $listener)[0]));

@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Telescope;
+namespace PDFfiller\TelescopeClient;
 
 use Closure;
 use Exception;
@@ -9,8 +9,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Log\Events\MessageLogged;
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use Laravel\Telescope\Contracts\EntriesRepository;
-use Laravel\Telescope\Contracts\TerminableRepository;
+use PDFfiller\TelescopeClient\Contracts\EntriesRepository;
+use PDFfiller\TelescopeClient\Contracts\TerminableRepository;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 class Telescope
@@ -237,7 +237,7 @@ class Telescope
      * Record the given entry.
      *
      * @param  string  $type
-     * @param  \Laravel\Telescope\IncomingEntry  $entry
+     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
      * @return void
      */
     protected static function record(string $type, IncomingEntry $entry)
@@ -272,7 +272,7 @@ class Telescope
     /**
      * Record the given entry update.
      *
-     * @param  \Laravel\Telescope\EntryUpdate  $update
+     * @param  \PDFfiller\TelescopeClient\EntryUpdate  $update
      * @return void
      */
     public static function recordUpdate(EntryUpdate $update)
@@ -285,7 +285,7 @@ class Telescope
     /**
      * Record the given entry.
      *
-     * @param  \Laravel\Telescope\IncomingEntry  $entry
+     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
      * @return void
      */
     public static function recordCache(IncomingEntry $entry)
@@ -296,7 +296,7 @@ class Telescope
     /**
      * Record the given entry.
      *
-     * @param  \Laravel\Telescope\IncomingEntry  $entry
+     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
      * @return void
      */
     public static function recordCommand(IncomingEntry $entry)
@@ -307,7 +307,7 @@ class Telescope
     /**
      * Record the given entry.
      *
-     * @param  \Laravel\Telescope\IncomingEntry  $entry
+     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
      * @return void
      */
     public static function recordDump(IncomingEntry $entry)
@@ -318,7 +318,7 @@ class Telescope
     /**
      * Record the given entry.
      *
-     * @param  \Laravel\Telescope\IncomingEntry  $entry
+     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
      * @return void
      */
     public static function recordEvent(IncomingEntry $entry)
@@ -329,7 +329,7 @@ class Telescope
     /**
      * Record the given entry.
      *
-     * @param  \Laravel\Telescope\IncomingEntry  $entry
+     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
      * @return void
      */
     public static function recordException(IncomingEntry $entry)
@@ -340,7 +340,7 @@ class Telescope
     /**
      * Record the given entry.
      *
-     * @param  \Laravel\Telescope\IncomingEntry  $entry
+     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
      * @return void
      */
     public static function recordGate(IncomingEntry $entry)
@@ -351,7 +351,7 @@ class Telescope
     /**
      * Record the given entry.
      *
-     * @param  \Laravel\Telescope\IncomingEntry  $entry
+     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
      * @return void
      */
     public static function recordJob($entry)
@@ -362,7 +362,7 @@ class Telescope
     /**
      * Record the given entry.
      *
-     * @param  \Laravel\Telescope\IncomingEntry  $entry
+     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
      * @return void
      */
     public static function recordLog(IncomingEntry $entry)
@@ -373,7 +373,7 @@ class Telescope
     /**
      * Record the given entry.
      *
-     * @param  \Laravel\Telescope\IncomingEntry  $entry
+     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
      * @return void
      */
     public static function recordMail(IncomingEntry $entry)
@@ -384,7 +384,7 @@ class Telescope
     /**
      * Record the given entry.
      *
-     * @param  \Laravel\Telescope\IncomingEntry  $entry
+     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
      * @return void
      */
     public static function recordNotification($entry)
@@ -395,7 +395,7 @@ class Telescope
     /**
      * Record the given entry.
      *
-     * @param  \Laravel\Telescope\IncomingEntry  $entry
+     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
      * @return void
      */
     public static function recordQuery(IncomingEntry $entry)
@@ -406,7 +406,7 @@ class Telescope
     /**
      * Record the given entry.
      *
-     * @param  \Laravel\Telescope\IncomingEntry  $entry
+     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
      * @return void
      */
     public static function recordModelEvent(IncomingEntry $entry)
@@ -417,7 +417,7 @@ class Telescope
     /**
      * Record the given entry.
      *
-     * @param  \Laravel\Telescope\IncomingEntry  $entry
+     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
      * @return void
      */
     public static function recordRedis(IncomingEntry $entry)
@@ -428,7 +428,7 @@ class Telescope
     /**
      * Record the given entry.
      *
-     * @param  \Laravel\Telescope\IncomingEntry  $entry
+     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
      * @return void
      */
     public static function recordRequest(IncomingEntry $entry)
@@ -439,7 +439,7 @@ class Telescope
     /**
      * Record the given entry.
      *
-     * @param  \Laravel\Telescope\IncomingEntry  $entry
+     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
      * @return void
      */
     public static function recordScheduledCommand(IncomingEntry $entry)
@@ -533,7 +533,7 @@ class Telescope
     /**
      * Store the queued entries and flush the queue.
      *
-     * @param  \Laravel\Telescope\Contracts\EntriesRepository  $storage
+     * @param  \PDFfiller\TelescopeClient\Contracts\EntriesRepository  $storage
      * @return void
      */
     public static function store(EntriesRepository $storage)

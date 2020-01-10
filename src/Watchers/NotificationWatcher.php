@@ -1,11 +1,11 @@
 <?php
 
-namespace Laravel\Telescope\Watchers;
+namespace PDFfiller\TelescopeClient\Watchers;
 
-use Laravel\Telescope\Telescope;
-use Laravel\Telescope\ExtractTags;
-use Laravel\Telescope\FormatModel;
-use Laravel\Telescope\IncomingEntry;
+use PDFfiller\TelescopeClient\Telescope;
+use PDFfiller\TelescopeClient\ExtractTags;
+use PDFfiller\TelescopeClient\FormatModel;
+use PDFfiller\TelescopeClient\IncomingEntry;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\AnonymousNotifiable;

@@ -1,13 +1,13 @@
 <?php
 
-namespace Laravel\Telescope\Watchers;
+namespace PDFfiller\TelescopeClient\Watchers;
 
 use Exception;
-use Laravel\Telescope\Telescope;
-use Laravel\Telescope\ExtractTags;
-use Laravel\Telescope\ExceptionContext;
+use PDFfiller\TelescopeClient\Telescope;
+use PDFfiller\TelescopeClient\ExtractTags;
+use PDFfiller\TelescopeClient\ExceptionContext;
 use Illuminate\Log\Events\MessageLogged;
-use Laravel\Telescope\IncomingExceptionEntry;
+use PDFfiller\TelescopeClient\IncomingExceptionEntry;
 
 class ExceptionWatcher extends Watcher
 {

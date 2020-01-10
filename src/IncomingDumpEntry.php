@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Telescope;
+namespace PDFfiller\TelescopeClient;
 
 class IncomingDumpEntry extends IncomingEntry
 {
@@ -40,7 +40,7 @@ class IncomingDumpEntry extends IncomingEntry
     /**
      * Description for the entry point.
      *
-     * @param  \Laravel\Telescope\IncomingDumpEntry  $entryPoint
+     * @param  \PDFfiller\TelescopeClient\IncomingDumpEntry  $entryPoint
      * @return string
      */
     private function entryPointDescription($entryPoint)

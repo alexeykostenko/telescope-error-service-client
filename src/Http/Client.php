@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Telescope\Http;
+namespace PDFfiller\TelescopeClient\Http;
 
 use GuzzleHttp\Client as GuzzleHttpClient;
 use GuzzleHttp\RequestOptions;

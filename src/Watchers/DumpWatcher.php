@@ -1,9 +1,9 @@
 <?php
 
-namespace Laravel\Telescope\Watchers;
+namespace PDFfiller\TelescopeClient\Watchers;
 
-use Laravel\Telescope\Telescope;
-use Laravel\Telescope\IncomingDumpEntry;
+use PDFfiller\TelescopeClient\Telescope;
+use PDFfiller\TelescopeClient\IncomingDumpEntry;
 use Symfony\Component\VarDumper\VarDumper;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;

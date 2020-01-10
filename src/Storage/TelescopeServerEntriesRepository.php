@@ -1,22 +1,22 @@
 <?php
 
-namespace Laravel\Telescope\Storage;
+namespace PDFfiller\TelescopeClient\Storage;
 
 use DateTimeInterface;
-use Laravel\Telescope\EntryType;
+use PDFfiller\TelescopeClient\EntryType;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Laravel\Telescope\EntryResult;
-use Laravel\Telescope\Contracts\PrunableRepository;
-use Laravel\Telescope\Contracts\TerminableRepository;
-use Laravel\Telescope\Contracts\EntriesRepository as Contract;
+use PDFfiller\TelescopeClient\EntryResult;
+use PDFfiller\TelescopeClient\Contracts\PrunableRepository;
+use PDFfiller\TelescopeClient\Contracts\TerminableRepository;
+use PDFfiller\TelescopeClient\Contracts\EntriesRepository as Contract;
 use GuzzleHttp\RequestOptions;
-use Laravel\Telescope\Http\Client;
+use PDFfiller\TelescopeClient\Http\Client;
 
 class TelescopeServerEntriesRepository implements Contract
 {
     /**
-     * @var \Laravel\Telescope\Http\Client
+     * @var \PDFfiller\TelescopeClient\Http\Client
      */
     protected $httpClient;
 
@@ -30,7 +30,7 @@ class TelescopeServerEntriesRepository implements Contract
     /**
      * Store the given array of entries.
      *
-     * @param  \Illuminate\Support\Collection|\Laravel\Telescope\IncomingEntry[]  $entries
+     * @param  \Illuminate\Support\Collection|\PDFfiller\TelescopeClient\IncomingEntry[]  $entries
      * @return void
      */
     public function store(Collection $entries)
@@ -60,7 +60,7 @@ class TelescopeServerEntriesRepository implements Contract
     /**
      * Store the given array of exception entries.
      *
-     * @param  \Illuminate\Support\Collection|\Laravel\Telescope\IncomingEntry[]  $exceptions
+     * @param  \Illuminate\Support\Collection|\PDFfiller\TelescopeClient\IncomingEntry[]  $exceptions
      * @return void
      */
     protected function storeExceptions(Collection $exceptions)
@@ -102,7 +102,7 @@ class TelescopeServerEntriesRepository implements Contract
     /**
      * Store the given entry updates.
      *
-     * @param  \Illuminate\Support\Collection|\Laravel\Telescope\EntryUpdate[]  $updates
+     * @param  \Illuminate\Support\Collection|\PDFfiller\TelescopeClient\EntryUpdate[]  $updates
      * @return void
      */
     public function update(Collection $updates)
@@ -133,7 +133,7 @@ class TelescopeServerEntriesRepository implements Contract
     /**
      * Update tags of the given entry.
      *
-     * @param  \Laravel\Telescope\EntryUpdate  $entry
+     * @param  \PDFfiller\TelescopeClient\EntryUpdate  $entry
      * @return void
      */
     protected function updateTags($entry)

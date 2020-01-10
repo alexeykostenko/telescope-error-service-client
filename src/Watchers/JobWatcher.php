@@ -1,16 +1,16 @@
 <?php
 
-namespace Laravel\Telescope\Watchers;
+namespace PDFfiller\TelescopeClient\Watchers;
 
 use Illuminate\Queue\Queue;
-use Laravel\Telescope\EntryType;
-use Laravel\Telescope\Telescope;
-use Laravel\Telescope\EntryUpdate;
-use Laravel\Telescope\ExtractTags;
-use Laravel\Telescope\IncomingEntry;
+use PDFfiller\TelescopeClient\EntryType;
+use PDFfiller\TelescopeClient\Telescope;
+use PDFfiller\TelescopeClient\EntryUpdate;
+use PDFfiller\TelescopeClient\ExtractTags;
+use PDFfiller\TelescopeClient\IncomingEntry;
 use Illuminate\Queue\Events\JobFailed;
-use Laravel\Telescope\ExceptionContext;
-use Laravel\Telescope\ExtractProperties;
+use PDFfiller\TelescopeClient\ExceptionContext;
+use PDFfiller\TelescopeClient\ExtractProperties;
 use Illuminate\Queue\Events\JobProcessed;
 
 class JobWatcher extends Watcher
@@ -37,7 +37,7 @@ class JobWatcher extends Watcher
      * @param  string  $connection
      * @param  string  $queue
      * @param  array  $payload
-     * @return \Laravel\Telescope\IncomingEntry|null
+     * @return \PDFfiller\TelescopeClient\IncomingEntry|null
      */
     public function recordJob($connection, $queue, array $payload)
     {

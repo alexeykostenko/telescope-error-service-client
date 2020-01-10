@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Telescope\Storage;
+namespace PDFfiller\TelescopeClient\Storage;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -55,7 +55,7 @@ class EntryModel extends Model
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  string  $type
-     * @param  \Laravel\Telescope\Storage\EntryQueryOptions  $options
+     * @param  \PDFfiller\TelescopeClient\Storage\EntryQueryOptions  $options
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeWithTelescopeOptions($query, $type, EntryQueryOptions $options)
@@ -90,7 +90,7 @@ class EntryModel extends Model
      * Scope the query for the given batch ID.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \Laravel\Telescope\Storage\EntryQueryOptions  $options
+     * @param  \PDFfiller\TelescopeClient\Storage\EntryQueryOptions  $options
      * @return $this
      */
     protected function whereBatchId($query, EntryQueryOptions $options)
@@ -106,7 +106,7 @@ class EntryModel extends Model
      * Scope the query for the given type.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \Laravel\Telescope\Storage\EntryQueryOptions  $options
+     * @param  \PDFfiller\TelescopeClient\Storage\EntryQueryOptions  $options
      * @return $this
      */
     protected function whereTag($query, EntryQueryOptions $options)
@@ -124,7 +124,7 @@ class EntryModel extends Model
      * Scope the query for the given type.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \Laravel\Telescope\Storage\EntryQueryOptions  $options
+     * @param  \PDFfiller\TelescopeClient\Storage\EntryQueryOptions  $options
      * @return $this
      */
     protected function whereFamilyHash($query, EntryQueryOptions $options)
@@ -140,7 +140,7 @@ class EntryModel extends Model
      * Scope the query for the given pagination options.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \Laravel\Telescope\Storage\EntryQueryOptions  $options
+     * @param  \PDFfiller\TelescopeClient\Storage\EntryQueryOptions  $options
      * @return $this
      */
     protected function whereBeforeSequence($query, EntryQueryOptions $options)
@@ -156,7 +156,7 @@ class EntryModel extends Model
      * Scope the query for the given display options.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \Laravel\Telescope\Storage\EntryQueryOptions  $options
+     * @param  \PDFfiller\TelescopeClient\Storage\EntryQueryOptions  $options
      * @return $this
      */
     protected function filter($query, EntryQueryOptions $options)

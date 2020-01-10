@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Telescope\Console;
+namespace PDFfiller\TelescopeClient\Console;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;

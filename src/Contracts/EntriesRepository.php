@@ -1,17 +1,17 @@
 <?php
 
-namespace Laravel\Telescope\Contracts;
+namespace PDFfiller\TelescopeClient\Contracts;
 
 use Illuminate\Support\Collection;
-use Laravel\Telescope\EntryResult;
-use Laravel\Telescope\Storage\EntryQueryOptions;
+use PDFfiller\TelescopeClient\EntryResult;
+use PDFfiller\TelescopeClient\Storage\EntryQueryOptions;
 
 interface EntriesRepository
 {
     /**
      * Store the given entries.
      *
-     * @param  \Illuminate\Support\Collection|\Laravel\Telescope\IncomingEntry[]  $entries
+     * @param  \Illuminate\Support\Collection|\PDFfiller\TelescopeClient\IncomingEntry[]  $entries
      * @return void
      */
     public function store(Collection $entries);
@@ -19,7 +19,7 @@ interface EntriesRepository
     /**
      * Store the given entry updates.
      *
-     * @param  \Illuminate\Support\Collection|\Laravel\Telescope\EntryUpdate[]  $updates
+     * @param  \Illuminate\Support\Collection|\PDFfiller\TelescopeClient\EntryUpdate[]  $updates
      * @return void
      */
     public function update(Collection $updates);

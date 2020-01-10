@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Telescope;
+namespace PDFfiller\TelescopeClient;
 
 use ReflectionClass;
 use Illuminate\Database\Eloquent\Model;
