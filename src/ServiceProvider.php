@@ -34,8 +34,8 @@ class ServiceProvider extends SupportServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/telescope-client.php' => config_path('telescope.php'),
-            ], 'telescope-config');
+                __DIR__.'/../config/telescope-client.php' => config_path('telescope-client.php'),
+            ], 'telescope-client-config');
         }
     }
 
@@ -47,7 +47,7 @@ class ServiceProvider extends SupportServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/telescope-client.php', 'telescope'
+            __DIR__.'/../config/telescope-client.php', 'telescope-client'
         );
 
         $this->registerStorageDriver();
@@ -82,9 +82,5 @@ class ServiceProvider extends SupportServiceProvider
         $this->app->singleton(
             EntriesRepository::class, TelescopeServerEntriesRepository::class
         );
-
-/*        $this->app->when(TelescopeServerEntriesRepository::class)
-            ->needs('$httpClient')
-            ->give(new Client(config('telescope-client.server')));*/
     }
 }
