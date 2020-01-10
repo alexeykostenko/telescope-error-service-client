@@ -34,7 +34,7 @@ class TelescopeServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/telescope.php' => config_path('telescope.php'),
+                __DIR__.'/../config/telescope-client.php' => config_path('telescope.php'),
             ], 'telescope-config');
         }
     }
@@ -47,7 +47,7 @@ class TelescopeServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/telescope.php', 'telescope'
+            __DIR__.'/../config/telescope-client.php', 'telescope'
         );
 
         $this->registerStorageDriver();
