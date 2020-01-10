@@ -6,7 +6,7 @@ You need to add section repositories in your composer.json, for example:
 
 ```
 "repositories": {
-    "telescope-errors": {
+    "telescope-client": {
         "type": "vcs",
         "url": "git@github.com:alexeykostenko/telescope-client.git"
     }
