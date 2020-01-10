@@ -8,18 +8,17 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Laravel\Telescope\EntryResult;
 use Laravel\Telescope\Contracts\PrunableRepository;
-use Laravel\Telescope\Contracts\ClearableRepository;
 use Laravel\Telescope\Contracts\TerminableRepository;
 use Laravel\Telescope\Contracts\EntriesRepository as Contract;
+use GuzzleHttp\RequestOptions;
+use Laravel\Telescope\Http\Client;
 
-class DatabaseEntriesRepository implements Contract, ClearableRepository, PrunableRepository, TerminableRepository
+class TelescopeServerEntriesRepository implements Contract
 {
     /**
-     * The database connection name that should be used.
-     *
-     * @var string
+     * @var \Laravel\Telescope\Http\Client
      */
-    protected $connection;
+    protected $httpClient;
 
     /**
      * The tags currently being monitored.
@@ -27,73 +26,6 @@ class DatabaseEntriesRepository implements Contract, ClearableRepository, Prunab
      * @var array|null
      */
     protected $monitoredTags;
-
-    /**
-     * Create a new database repository.
-     *
-     * @param  string  $connection
-     * @return void
-     */
-    public function __construct(string $connection)
-    {
-        $this->connection = $connection;
-    }
-
-    /**
-     * Find the entry with the given ID.
-     *
-     * @param  mixed  $id
-     * @return \Laravel\Telescope\EntryResult
-     */
-    public function find($id): EntryResult
-    {
-        $entry = EntryModel::on($this->connection)->whereUuid($id)->firstOrFail();
-
-        $tags = $this->table('telescope_entries_tags')
-                        ->where('entry_uuid', $id)
-                        ->pluck('tag')
-                        ->all();
-
-        return new EntryResult(
-            $entry->uuid,
-            null,
-            $entry->batch_id,
-            $entry->type,
-            $entry->family_hash,
-            $entry->content,
-            $entry->created_at,
-            $tags
-        );
-    }
-
-    /**
-     * Return all the entries of a given type.
-     *
-     * @param  string|null  $type
-     * @param  \Laravel\Telescope\Storage\EntryQueryOptions  $options
-     * @return \Illuminate\Support\Collection|\Laravel\Telescope\EntryResult[]
-     */
-    public function get($type, EntryQueryOptions $options)
-    {
-        return EntryModel::on($this->connection)
-            ->withTelescopeOptions($type, $options)
-            ->take($options->limit)
-            ->orderByDesc('sequence')
-            ->get()->reject(function ($entry) {
-                return ! is_array($entry->content);
-            })->map(function ($entry) {
-                return new EntryResult(
-                    $entry->uuid,
-                    $entry->sequence,
-                    $entry->batch_id,
-                    $entry->type,
-                    $entry->family_hash,
-                    $entry->content,
-                    $entry->created_at,
-                    []
-                );
-            })->values();
-    }
 
     /**
      * Store the given array of entries.
@@ -111,14 +43,15 @@ class DatabaseEntriesRepository implements Contract, ClearableRepository, Prunab
 
         $this->storeExceptions($exceptions);
 
-        $table = $this->table('telescope_entries');
+        $entries->chunk(1000)->each(function ($chunked) {
+            (new Client)->post('entries', [
+                RequestOptions::FORM_PARAMS => $chunked->map(function ($entry) {
+                    $entry->uuid = $entry->uuid->toString();
+                    $entry->content = json_encode($entry->content);
 
-        $entries->chunk(1000)->each(function ($chunked) use ($table) {
-            $table->insert($chunked->map(function ($entry) {
-                $entry->content = json_encode($entry->content);
-
-                return $entry->toArray();
-            })->toArray());
+                    return $entry->toArray();
+                })->toArray()
+            ]);
         });
 
         $this->storeTags($entries->pluck('tags', 'uuid'));
@@ -132,24 +65,16 @@ class DatabaseEntriesRepository implements Contract, ClearableRepository, Prunab
      */
     protected function storeExceptions(Collection $exceptions)
     {
-        $this->table('telescope_entries')->insert($exceptions->map(function ($exception) {
-            $occurrences = $this->table('telescope_entries')
-                    ->where('type', EntryType::EXCEPTION)
-                    ->where('family_hash', $exception->familyHash())
-                    ->count();
+        (new Client)->post('entries', [
+                RequestOptions::FORM_PARAMS => $exceptions->map(function ($exception) {
+                    $exception->uuid = $exception->uuid->toString();
 
-            $this->table('telescope_entries')
-                    ->where('type', EntryType::EXCEPTION)
-                    ->where('family_hash', $exception->familyHash())
-                    ->update(['should_display_on_index' => false]);
-
-            return array_merge($exception->toArray(), [
-                'family_hash' => $exception->familyHash(),
-                'content' => json_encode(array_merge(
-                    $exception->content, ['occurrences' => $occurrences + 1]
-                )),
-            ]);
-        })->toArray());
+                    return array_merge($exception->toArray(), [
+                        'family_hash' => $exception->familyHash(),
+                        'content' => json_encode($exception->content),
+                    ]);
+                })->toArray()
+        ]);
 
         $this->storeTags($exceptions->pluck('tags', 'uuid'));
     }
@@ -162,14 +87,16 @@ class DatabaseEntriesRepository implements Contract, ClearableRepository, Prunab
      */
     protected function storeTags($results)
     {
-        $this->table('telescope_entries_tags')->insert($results->flatMap(function ($tags, $uuid) {
-            return collect($tags)->map(function ($tag) use ($uuid) {
-                return [
-                    'entry_uuid' => $uuid,
-                    'tag' => $tag,
-                ];
-            });
-        })->all());
+        (new Client)->post('entries-tags', [
+            RequestOptions::FORM_PARAMS => $results->flatMap(function ($tags, $uuid) {
+                return collect($tags)->map(function ($tag) use ($uuid) {
+                    return [
+                        'entry_uuid' => $uuid,
+                        'tag' => $tag,
+                    ];
+                });
+            })->all()
+        ]);
     }
 
     /**
@@ -299,50 +226,5 @@ class DatabaseEntriesRepository implements Contract, ClearableRepository, Prunab
     public function stopMonitoring(array $tags)
     {
         $this->table('telescope_monitoring')->whereIn('tag', $tags)->delete();
-    }
-
-    /**
-     * Prune all of the entries older than the given date.
-     *
-     * @param  \DateTimeInterface  $before
-     * @return int
-     */
-    public function prune(DateTimeInterface $before)
-    {
-        return $this->table('telescope_entries')
-                ->where('created_at', '<', $before)
-                ->delete();
-    }
-
-    /**
-     * Clear all the entries.
-     *
-     * @return void
-     */
-    public function clear()
-    {
-        $this->table('telescope_entries')->delete();
-        $this->table('telescope_monitoring')->delete();
-    }
-
-    /**
-     * Perform any clean-up tasks needed after storing Telescope entries.
-     *
-     * @return void
-     */
-    public function terminate()
-    {
-        $this->monitoredTags = null;
-    }
-
-    /**
-     * Get a query builder instance for the given table.
-     *
-     * @param  string  $table
-     * @return \Illuminate\Database\Query\Builder
-     */
-    protected function table($table)
-    {
-        return DB::connection($this->connection)->table($table);
     }
 }

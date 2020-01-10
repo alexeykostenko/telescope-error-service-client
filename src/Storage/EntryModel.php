@@ -177,6 +177,6 @@ class EntryModel extends Model
      */
     public function getConnectionName()
     {
-        return config('telescope.storage.database.connection');
+        return config('telescope-client.storage.database.connection');
     }
 }

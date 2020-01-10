@@ -30,7 +30,7 @@ trait RegistersWatchers
      */
     protected static function registerWatchers($app)
     {
-        foreach (config('telescope.watchers') as $key => $watcher) {
+        foreach (config('telescope-client.watchers') as $key => $watcher) {
             if (is_string($key) && $watcher === false) {
                 continue;
             }

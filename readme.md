@@ -1,24 +1,25 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1539108489/telescope-logo.svg"></p>
+## Telescope Errors Sender
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/telescope"><img src="https://travis-ci.org/laravel/telescope.svg?branch=1.0" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/telescope"><img src="https://poser.pugx.org/laravel/telescope/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/telescope"><img src="https://poser.pugx.org/laravel/telescope/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/telescope"><img src="https://poser.pugx.org/laravel/telescope/license.svg" alt="License"></a>
-</p>
+#### Installation
 
-## Introduction
+You need to add section repositories in your composer.json, for example:
 
-Laravel Telescope is an elegant debug assistant for the Laravel framework. Telescope provides insight into the requests coming into your application, exceptions, log entries, database queries, queued jobs, mail, notifications, cache operations, scheduled tasks, variable dumps and more. Telescope makes a wonderful companion to your local Laravel development environment.
+```
+"repositories": {
+    "telescope-errors": {
+        "type": "vcs",
+        "url": "git@github.com:alexeykostenko/telescope-client.git"
+    }
+}
+```
 
-<p align="center">
-<img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1539110860/Screen_Shot_2018-10-09_at_1.47.23_PM.png">
-</p>
+Require package:
+```
+composer require pdffiller/telescope-client:dev-master
+```
 
-## Official Documentation
+After installing package, publish its assets using the telescope-client:install Artisan command. After installing Telescope Errors, you should also run the migrate command:
+```
+php artisan telescope-client:install
 
-Documentation for Telescope can be found on the [Laravel website](https://laravel.com/docs/telescope).
-
-## License
-
-Laravel Telescope is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```

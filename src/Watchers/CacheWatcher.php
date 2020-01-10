@@ -20,11 +20,7 @@ class CacheWatcher extends Watcher
      */
     public function register($app)
     {
-        $app['events']->listen(CacheHit::class, [$this, 'recordCacheHit']);
         $app['events']->listen(CacheMissed::class, [$this, 'recordCacheMissed']);
-
-        $app['events']->listen(KeyWritten::class, [$this, 'recordKeyWritten']);
-        $app['events']->listen(KeyForgotten::class, [$this, 'recordKeyForgotten']);
     }
 
     /**

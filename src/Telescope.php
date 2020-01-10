@@ -15,8 +15,7 @@ use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 class Telescope
 {
-    use AuthorizesRequests,
-        ExtractsMailableTags,
+    use ExtractsMailableTags,
         ListensForStorageOpportunities,
         RegistersWatchers;
 
@@ -124,7 +123,7 @@ class Telescope
      */
     public static function start($app)
     {
-        if (! config('telescope.enabled')) {
+        if (! config('telescope-client.enabled')) {
             return;
         }
 
@@ -162,7 +161,7 @@ class Telescope
                 'horizon',
                 'horizon:work',
                 'horizon:supervisor',
-            ], config('telescope.ignoreCommands', []), config('telescope.ignore_commands', []))
+            ], config('telescope-client.ignoreCommands', []), config('telescope-client.ignore_commands', []))
         );
     }
 
@@ -176,12 +175,12 @@ class Telescope
     {
         return ! $app->runningInConsole() && ! $app['request']->is(
             array_merge([
-                config('telescope.path').'*',
+                config('telescope-client.path').'*',
                 'telescope-api*',
                 'vendor/telescope*',
                 'horizon*',
                 'vendor/horizon*',
-            ], config('telescope.ignore_paths', []))
+            ], config('telescope-client.ignore_paths', []))
         );
     }
 
@@ -673,7 +672,7 @@ class Telescope
     public static function scriptVariables()
     {
         return [
-            'path' => config('telescope.path'),
+            'path' => config('telescope-client.path'),
             'timezone' => config('app.timezone'),
             'recording' => ! cache('telescope:pause-recording'),
         ];

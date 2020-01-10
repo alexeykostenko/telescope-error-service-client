@@ -1,7 +1,6 @@
 <?php
 
 use Laravel\Telescope\Watchers;
-use Laravel\Telescope\Http\Middleware\Authorize;
 
 return [
 
@@ -62,22 +61,6 @@ return [
     */
 
     'enabled' => env('TELESCOPE_ENABLED', true),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Telescope Route Middleware
-    |--------------------------------------------------------------------------
-    |
-    | These middleware will be assigned to every Telescope route, giving you
-    | the chance to add your own middleware to this list or change any of
-    | the existing middleware. Or, you can simply stick with this list.
-    |
-    */
-
-    'middleware' => [
-        'web',
-        Authorize::class,
-    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -151,5 +134,11 @@ return [
         ],
 
         Watchers\ScheduleWatcher::class => env('TELESCOPE_SCHEDULE_WATCHER', true),
+    ],
+
+    'server' => [
+        'base_uri'      => env('TELESCOPE_SERVER_BASE_URI'),
+        'client_id'     => env('TELESCOPE_SERVER_CLIENT_ID'),
+        'client_secret' => env('TELESCOPE_SERVER_CLIENT_SECRET'),
     ],
 ];
