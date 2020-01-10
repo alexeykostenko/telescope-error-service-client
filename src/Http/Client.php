@@ -15,7 +15,7 @@ class Client extends GuzzleHttpClient
     protected $cacheKey = 'telescope_server_oauth_token';
 
     /** @var string */
-    protected $configKey = 'telescope.server';
+    protected $configKey = 'telescope-client.server';
 
     /** @var array */
     protected $headers = [];
