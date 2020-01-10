@@ -11,7 +11,7 @@ class PublishCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'telescope:publish {--force : Overwrite any existing files}';
+    protected $signature = 'telescope-client:publish {--force : Overwrite any existing files}';
 
     /**
      * The console command description.
