@@ -15,7 +15,7 @@ class InstallCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'telescope:install';
+    protected $signature = 'telescope-client:install';
 
     /**
      * The console command description.
