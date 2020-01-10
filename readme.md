@@ -1,4 +1,4 @@
-## Telescope Errors Sender
+## Telescope client
 
 #### Installation
 
@@ -21,5 +21,4 @@ composer require pdffiller/telescope-client:dev-master
 After installing package, publish its assets using the telescope-client:install Artisan command. After installing Telescope Errors, you should also run the migrate command:
 ```
 php artisan telescope-client:install
-
 ```
