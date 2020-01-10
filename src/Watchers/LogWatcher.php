@@ -1,11 +1,11 @@
 <?php
 
-namespace Laravel\Telescope\Watchers;
+namespace PDFfiller\TelescopeClient\Watchers;
 
 use Exception;
 use Illuminate\Support\Arr;
-use Laravel\Telescope\Telescope;
-use Laravel\Telescope\IncomingEntry;
+use PDFfiller\TelescopeClient\Telescope;
+use PDFfiller\TelescopeClient\IncomingEntry;
 use Illuminate\Log\Events\MessageLogged;
 
 class LogWatcher extends Watcher

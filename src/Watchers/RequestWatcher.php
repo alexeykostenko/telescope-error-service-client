@@ -1,13 +1,13 @@
 <?php
 
-namespace Laravel\Telescope\Watchers;
+namespace PDFfiller\TelescopeClient\Watchers;
 
 use Illuminate\View\View;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
-use Laravel\Telescope\Telescope;
-use Laravel\Telescope\FormatModel;
-use Laravel\Telescope\IncomingEntry;
+use PDFfiller\TelescopeClient\Telescope;
+use PDFfiller\TelescopeClient\FormatModel;
+use PDFfiller\TelescopeClient\IncomingEntry;
 use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Response as IlluminateResponse;

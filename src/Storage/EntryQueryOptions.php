@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Telescope\Storage;
+namespace PDFfiller\TelescopeClient\Storage;
 
 use Illuminate\Http\Request;
 

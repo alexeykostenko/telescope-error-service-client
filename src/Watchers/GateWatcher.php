@@ -1,12 +1,12 @@
 <?php
 
-namespace Laravel\Telescope\Watchers;
+namespace PDFfiller\TelescopeClient\Watchers;
 
 use Illuminate\Support\Str;
-use Laravel\Telescope\Telescope;
-use Laravel\Telescope\FormatModel;
+use PDFfiller\TelescopeClient\Telescope;
+use PDFfiller\TelescopeClient\FormatModel;
 use Illuminate\Support\Facades\Gate;
-use Laravel\Telescope\IncomingEntry;
+use PDFfiller\TelescopeClient\IncomingEntry;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
 

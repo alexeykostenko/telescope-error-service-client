@@ -1,6 +1,6 @@
 <?php
 
-use Laravel\Telescope\Watchers;
+use PDFfiller\TelescopeClient\Watchers;
 
 return [
 

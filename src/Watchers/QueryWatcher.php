@@ -1,9 +1,9 @@
 <?php
 
-namespace Laravel\Telescope\Watchers;
+namespace PDFfiller\TelescopeClient\Watchers;
 
-use Laravel\Telescope\Telescope;
-use Laravel\Telescope\IncomingEntry;
+use PDFfiller\TelescopeClient\Telescope;
+use PDFfiller\TelescopeClient\IncomingEntry;
 use Illuminate\Database\Events\QueryExecuted;
 
 class QueryWatcher extends Watcher

@@ -1,16 +1,16 @@
 <?php
 
-namespace Laravel\Telescope;
+namespace PDFfiller\TelescopeClient;
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\ServiceProvider;
-use Laravel\Telescope\Contracts\EntriesRepository;
-use Laravel\Telescope\Contracts\PrunableRepository;
-use Laravel\Telescope\Storage\TelescopeServerEntriesRepository;
+use Illuminate\Support\ServiceProvider as SupportServiceProvider;
+use PDFfiller\TelescopeClient\Contracts\EntriesRepository;
+use PDFfiller\TelescopeClient\Contracts\PrunableRepository;
+use PDFfiller\TelescopeClient\Storage\TelescopeServerEntriesRepository;
 
-use Laravel\Telescope\Http\Client;
+use PDFfiller\TelescopeClient\Http\Client;
 
-class TelescopeServiceProvider extends ServiceProvider
+class ServiceProvider extends SupportServiceProvider
 {
     /**
      * Bootstrap any package services.

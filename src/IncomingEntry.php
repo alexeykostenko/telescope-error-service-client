@@ -1,9 +1,9 @@
 <?php
 
-namespace Laravel\Telescope;
+namespace PDFfiller\TelescopeClient;
 
 use Illuminate\Support\Str;
-use Laravel\Telescope\Contracts\EntriesRepository;
+use PDFfiller\TelescopeClient\Contracts\EntriesRepository;
 
 class IncomingEntry
 {
