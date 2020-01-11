@@ -42,7 +42,7 @@ class Client extends GuzzleHttpClient
 
         $this->headers = [
             RequestOptions::HEADERS => [
-                //'Authorization' => 'Bearer ' . $this->getBearerToken($config),
+                'Authorization' => 'Bearer ' . $this->getBearerToken($config),
                 'Accept'        => 'application/json',
             ]
         ];
@@ -61,6 +61,9 @@ class Client extends GuzzleHttpClient
         }
 
         $response = $this->post('/oauth/token', [
+            RequestOptions::HEADERS => [
+                'Accept' => 'application/json',
+            ],
             RequestOptions::FORM_PARAMS => [
                 'client_id'     => $config['client_id'],
                 'client_secret' => $config['client_secret'],
