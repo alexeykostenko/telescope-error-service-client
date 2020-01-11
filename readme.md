@@ -22,3 +22,11 @@ After installing package, publish its assets using the telescope-client:install 
 ```
 php artisan telescope-client:install
 ```
+
+#### Configuration
+Add server parameters to `.env` file
+```
+TELESCOPE_SERVER_BASE_URI=http://0.0.0.0:8001/api/
+TELESCOPE_SERVER_CLIENT_ID=1
+TELESCOPE_SERVER_CLIENT_SECRET=secret
+```
