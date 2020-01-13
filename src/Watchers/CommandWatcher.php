@@ -27,7 +27,7 @@ class CommandWatcher extends Watcher
      */
     public function recordCommand(CommandFinished $event)
     {
-        if (! Telescope::isRecording() || $this->shouldIgnore($event)) {
+        if (! Telescope::isRecording() || $this->shouldIgnore($event) || !$event->exitCode) {
             return;
         }
 

@@ -39,6 +39,14 @@ class RequestWatcher extends Watcher
             return;
         }
 
+        if (!$event->response->isServerError() && !$event->response->isClientError()) {
+            return;
+        }
+
+        if ($event->response->getStatusCode() === 404) {
+            return;
+        }
+
         Telescope::recordRequest(IncomingEntry::make([
             'uri' => str_replace($event->request->root(), '', $event->request->fullUrl()) ?: '/',
             'method' => $event->request->method(),

@@ -27,7 +27,6 @@ class JobWatcher extends Watcher
             return ['telescope_uuid' => optional($this->recordJob($connection, $queue, $payload))->uuid];
         });
 
-        $app['events']->listen(JobProcessed::class, [$this, 'recordProcessedJob']);
         $app['events']->listen(JobFailed::class, [$this, 'recordFailedJob']);
     }
 
@@ -55,29 +54,6 @@ class JobWatcher extends Watcher
         );
 
         return $entry;
-    }
-
-    /**
-     * Record a queued job was processed.
-     *
-     * @param  \Illuminate\Queue\Events\JobProcessed  $event
-     * @return void
-     */
-    public function recordProcessedJob(JobProcessed $event)
-    {
-        if (! Telescope::isRecording()) {
-            return;
-        }
-
-        $uuid = $event->job->payload()['telescope_uuid'] ?? null;
-
-        if (! $uuid) {
-            return;
-        }
-
-        Telescope::recordUpdate(EntryUpdate::make(
-            $uuid, EntryType::JOB, ['status' => 'processed']
-        ));
     }
 
     /**

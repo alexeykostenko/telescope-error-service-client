@@ -33,6 +33,13 @@ class LogWatcher extends Watcher
             return;
         }
 
+        if (! in_array($event->level, [
+            'critical',
+            'error',
+        ])) {
+            return;
+        }
+
         Telescope::recordLog(
             IncomingEntry::make([
                 'level' => $event->level,
