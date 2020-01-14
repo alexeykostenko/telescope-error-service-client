@@ -44,6 +44,7 @@ class Client extends GuzzleHttpClient
             RequestOptions::HEADERS => [
                 'Authorization' => 'Bearer ' . $this->getBearerToken($config),
                 'Accept'        => 'application/json',
+                'Timezone'      => config('app.timezone')
             ]
         ];
     }
