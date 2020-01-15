@@ -21,26 +21,11 @@ use PDFfiller\TelescopeClient\EntryType;
 class TelescopeServerEntriesRepository implements Contract
 {
     /**
-     * @var \PDFfiller\TelescopeClient\Http\Client
-     */
-    protected $client;
-
-    /**
      * The tags currently being monitored.
      *
      * @var array|null
      */
     protected $monitoredTags;
-
-    /**
-     * TelescopeServerEntriesRepository constructor.
-     *
-     * @param \PDFfiller\TelescopeClient\Http\Client $client
-     */
-    public function __construct(Client $client)
-    {
-        $this->client = $client;
-    }
 
     /**
      * Store the given array of entries.
@@ -59,7 +44,7 @@ class TelescopeServerEntriesRepository implements Contract
         $this->storeExceptions($exceptions);
 
         $entries->chunk(1000)->each(function ($chunked) {
-            $this->client->post('entries', [
+            app(Client::class)->post('entries', [
                 RequestOptions::FORM_PARAMS => $chunked->map(function ($entry) {
                     $entry->uuid = $entry->uuid->toString();
                     $entry->content = json_encode($entry->content);
@@ -80,7 +65,7 @@ class TelescopeServerEntriesRepository implements Contract
      */
     protected function storeExceptions(Collection $exceptions)
     {
-        $this->client->post('entries', [
+        app(Client::class)->post('entries', [
                 RequestOptions::FORM_PARAMS => $exceptions->map(function ($exception) {
                     $exception->uuid = $exception->uuid->toString();
 
@@ -102,7 +87,7 @@ class TelescopeServerEntriesRepository implements Contract
      */
     protected function storeTags($results)
     {
-        $this->client->post('entries-tags', [
+        app(Client::class)->post('entries-tags', [
             RequestOptions::FORM_PARAMS => $results->flatMap(function ($tags, $uuid) {
                 return collect($tags)->map(function ($tag) use ($uuid) {
                     return [

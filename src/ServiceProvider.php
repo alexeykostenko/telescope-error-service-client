@@ -8,8 +8,6 @@ use PDFfiller\TelescopeClient\Contracts\EntriesRepository;
 use PDFfiller\TelescopeClient\Contracts\PrunableRepository;
 use PDFfiller\TelescopeClient\Storage\TelescopeServerEntriesRepository;
 
-use PDFfiller\TelescopeClient\Http\Client;
-
 class ServiceProvider extends SupportServiceProvider
 {
     /**
