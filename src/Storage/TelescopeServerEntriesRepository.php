@@ -3,22 +3,27 @@
 namespace PDFfiller\TelescopeClient\Storage;
 
 use DateTimeInterface;
-use PDFfiller\TelescopeClient\EntryType;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use PDFfiller\TelescopeClient\EntryResult;
+use GuzzleHttp\RequestOptions;
 use PDFfiller\TelescopeClient\Contracts\PrunableRepository;
 use PDFfiller\TelescopeClient\Contracts\TerminableRepository;
 use PDFfiller\TelescopeClient\Contracts\EntriesRepository as Contract;
-use GuzzleHttp\RequestOptions;
 use PDFfiller\TelescopeClient\Http\Client;
+use PDFfiller\TelescopeClient\EntryResult;
+use PDFfiller\TelescopeClient\EntryType;
 
+/**
+ * Class TelescopeServerEntriesRepository
+ *
+ * @package PDFfiller\TelescopeClient\Storage
+ */
 class TelescopeServerEntriesRepository implements Contract
 {
     /**
      * @var \PDFfiller\TelescopeClient\Http\Client
      */
-    protected $httpClient;
+    protected $client;
 
     /**
      * The tags currently being monitored.
@@ -26,6 +31,16 @@ class TelescopeServerEntriesRepository implements Contract
      * @var array|null
      */
     protected $monitoredTags;
+
+    /**
+     * TelescopeServerEntriesRepository constructor.
+     *
+     * @param \PDFfiller\TelescopeClient\Http\Client $client
+     */
+    public function __construct(Client $client)
+    {
+        $this->client = $client;
+    }
 
     /**
      * Store the given array of entries.
@@ -44,7 +59,7 @@ class TelescopeServerEntriesRepository implements Contract
         $this->storeExceptions($exceptions);
 
         $entries->chunk(1000)->each(function ($chunked) {
-            (new Client)->post('entries', [
+            $this->client->post('entries', [
                 RequestOptions::FORM_PARAMS => $chunked->map(function ($entry) {
                     $entry->uuid = $entry->uuid->toString();
                     $entry->content = json_encode($entry->content);
@@ -65,7 +80,7 @@ class TelescopeServerEntriesRepository implements Contract
      */
     protected function storeExceptions(Collection $exceptions)
     {
-        (new Client)->post('entries', [
+        $this->client->post('entries', [
                 RequestOptions::FORM_PARAMS => $exceptions->map(function ($exception) {
                     $exception->uuid = $exception->uuid->toString();
 
@@ -87,7 +102,7 @@ class TelescopeServerEntriesRepository implements Contract
      */
     protected function storeTags($results)
     {
-        (new Client)->post('entries-tags', [
+        $this->client->post('entries-tags', [
             RequestOptions::FORM_PARAMS => $results->flatMap(function ($tags, $uuid) {
                 return collect($tags)->map(function ($tag) use ($uuid) {
                     return [
