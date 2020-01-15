@@ -50,7 +50,7 @@ class TelescopeServerEntriesRepository implements Contract
                     $entry->content = json_encode($entry->content);
 
                     return $entry->toArray();
-                })->toArray()
+                })->values()->toArray()
             ]);
         });
 
@@ -73,7 +73,7 @@ class TelescopeServerEntriesRepository implements Contract
                         'family_hash' => $exception->familyHash(),
                         'content' => json_encode($exception->content),
                     ]);
-                })->toArray()
+                })->values()->toArray()
         ]);
 
         $this->storeTags($exceptions->pluck('tags', 'uuid'));
@@ -95,7 +95,7 @@ class TelescopeServerEntriesRepository implements Contract
                         'tag' => $tag,
                     ];
                 });
-            })->all()
+            })->values()->all()
         ]);
     }
 
