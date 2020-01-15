@@ -2,13 +2,13 @@
 
 namespace PDFfiller\TelescopeClient\Watchers;
 
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use PDFfiller\TelescopeClient\Telescope;
 use PDFfiller\TelescopeClient\FormatModel;
-use Illuminate\Support\Facades\Gate;
 use PDFfiller\TelescopeClient\IncomingEntry;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Contracts\Auth\Authenticatable;
 
 class GateWatcher extends Watcher
 {

@@ -12,6 +12,9 @@ use PDFfiller\TelescopeClient\Contracts\TerminableRepository;
 use PDFfiller\TelescopeClient\Contracts\EntriesRepository as Contract;
 use GuzzleHttp\RequestOptions;
 use PDFfiller\TelescopeClient\Http\Client;
+use PDFfiller\TelescopeClient\Jobs\SendEntry;
+use PDFfiller\TelescopeClient\Jobs\SendException;
+use PDFfiller\TelescopeClient\Jobs\SendTags;
 
 class TelescopeServerEntriesRepository implements Contract
 {
@@ -43,16 +46,7 @@ class TelescopeServerEntriesRepository implements Contract
 
         $this->storeExceptions($exceptions);
 
-        $entries->chunk(1000)->each(function ($chunked) {
-            (new Client)->post('entries', [
-                RequestOptions::FORM_PARAMS => $chunked->map(function ($entry) {
-                    $entry->uuid = $entry->uuid->toString();
-                    $entry->content = json_encode($entry->content);
-
-                    return $entry->toArray();
-                })->toArray()
-            ]);
-        });
+        SendEntry::dispatch($entries)->onQueue('send-exception');
 
         $this->storeTags($entries->pluck('tags', 'uuid'));
     }
@@ -65,16 +59,16 @@ class TelescopeServerEntriesRepository implements Contract
      */
     protected function storeExceptions(Collection $exceptions)
     {
-        (new Client)->post('entries', [
-                RequestOptions::FORM_PARAMS => $exceptions->map(function ($exception) {
-                    $exception->uuid = $exception->uuid->toString();
+        $exceptionsArray = $exceptions->map(function ($exception) {
+            $exception->uuid = $exception->uuid->toString();
 
-                    return array_merge($exception->toArray(), [
-                        'family_hash' => $exception->familyHash(),
-                        'content' => json_encode($exception->content),
-                    ]);
-                })->toArray()
-        ]);
+            return array_merge($exception->toArray(), [
+                'family_hash' => $exception->familyHash(),
+                'content' => json_encode($exception->content),
+            ]);
+        })->toArray();
+
+        SendException::dispatch($exceptionsArray)->onQueue('send-exception');
 
         $this->storeTags($exceptions->pluck('tags', 'uuid'));
     }
@@ -87,16 +81,14 @@ class TelescopeServerEntriesRepository implements Contract
      */
     protected function storeTags($results)
     {
-        (new Client)->post('entries-tags', [
-            RequestOptions::FORM_PARAMS => $results->flatMap(function ($tags, $uuid) {
-                return collect($tags)->map(function ($tag) use ($uuid) {
-                    return [
-                        'entry_uuid' => $uuid,
-                        'tag' => $tag,
-                    ];
-                });
-            })->all()
-        ]);
+        SendTags::dispatch($results->flatMap(function ($tags, $uuid) {
+            return collect($tags)->map(function ($tag) use ($uuid) {
+                return [
+                    'entry_uuid' => $uuid,
+                    'tag' => $tag,
+                ];
+            });
+        })->all())->onQueue('send-exception');
     }
 
     /**
