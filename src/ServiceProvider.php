@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as SupportServiceProvider;
 use PDFfiller\TelescopeClient\Contracts\EntriesRepository;
 use PDFfiller\TelescopeClient\Contracts\PrunableRepository;
-use PDFfiller\TelescopeClient\Storage\TelescopeServerEntriesRepository;
+use PDFfiller\TelescopeClient\Storage\ApiEntriesRepository;
 
 class ServiceProvider extends SupportServiceProvider
 {
@@ -78,7 +78,7 @@ class ServiceProvider extends SupportServiceProvider
     protected function registerDatabaseDriver()
     {
         $this->app->singleton(
-            EntriesRepository::class, TelescopeServerEntriesRepository::class
+            EntriesRepository::class, ApiEntriesRepository::class
         );
     }
 }

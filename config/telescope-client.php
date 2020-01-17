@@ -41,13 +41,7 @@ return [
     |
     */
 
-    'driver' => env('TELESCOPE_DRIVER', 'database'),
-
-    'storage' => [
-        'database' => [
-            'connection' => env('DB_CONNECTION', 'mysql'),
-        ],
-    ],
+    'driver' => env('TELESCOPE_DRIVER', 'api'),
 
     /*
     |--------------------------------------------------------------------------
@@ -60,7 +54,7 @@ return [
     |
     */
 
-    'enabled' => env('TELESCOPE_ENABLED', true),
+    'enabled' => env('TELESCOPE_ENABLED', false),
 
     /*
     |--------------------------------------------------------------------------

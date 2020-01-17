@@ -18,7 +18,7 @@ use PDFfiller\TelescopeClient\EntryType;
  *
  * @package PDFfiller\TelescopeClient\Storage
  */
-class TelescopeServerEntriesRepository implements Contract
+class ApiEntriesRepository implements Contract
 {
     /**
      * The tags currently being monitored.
@@ -108,23 +108,9 @@ class TelescopeServerEntriesRepository implements Contract
     public function update(Collection $updates)
     {
         foreach ($updates as $update) {
-            $entry = $this->table('telescope_entries')
-                            ->where('uuid', $update->uuid)
-                            ->where('type', $update->type)
-                            ->first();
-
-            if (! $entry) {
-                continue;
-            }
-
-            $content = json_encode(array_merge(
-                json_decode($entry->content, true), $update->changes
-            ));
-
-            $this->table('telescope_entries')
-                            ->where('uuid', $update->uuid)
-                            ->where('type', $update->type)
-                            ->update(['content' => $content]);
+            app(Client::class)->put('entries', [
+                RequestOptions::FORM_PARAMS => $update->changes
+            ]);
 
             $this->updateTags($update);
         }
