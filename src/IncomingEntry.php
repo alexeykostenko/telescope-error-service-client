@@ -76,8 +76,6 @@ class IncomingEntry
         $this->recordedAt = now();
 
         $this->content = array_merge($content, ['hostname' => gethostname()]);
-
-        // $this->tags = ['hostname:'.gethostname()];
     }
 
     /**
@@ -151,20 +149,6 @@ class IncomingEntry
         $this->tags = array_unique(array_merge($this->tags, $tags));
 
         return $this;
-    }
-
-    /**
-     * Determine if the incoming entry has a monitored tag.
-     *
-     * @return bool
-     */
-    public function hasMonitoredTag()
-    {
-        if (! empty($this->tags)) {
-            return app(EntriesRepository::class)->isMonitoring($this->tags);
-        }
-
-        return false;
     }
 
     /**

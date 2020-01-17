@@ -75,7 +75,7 @@ class ServiceProvider extends SupportServiceProvider
      *
      * @return void
      */
-    protected function registerDatabaseDriver()
+    protected function registerApiDriver()
     {
         $this->app->singleton(
             EntriesRepository::class, ApiEntriesRepository::class
