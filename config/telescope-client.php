@@ -6,32 +6,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Telescope Domain
-    |--------------------------------------------------------------------------
-    |
-    | This is the subdomain where Telescope will be accessible from. If the
-    | setting is null, Telescope will reside under the same domain as the
-    | application. Otherwise, this value will be used as the subdomain.
-    |
-    */
-
-    'domain' => null,
-
-    /*
-    |--------------------------------------------------------------------------
-    | Telescope Path
-    |--------------------------------------------------------------------------
-    |
-    | This is the URI path where Telescope will be accessible from. Feel free
-    | to change this path to anything you like. Note that the URI will not
-    | affect the paths of its internal API that aren't exposed to users.
-    |
-    */
-
-    'path' => 'telescope',
-
-    /*
-    |--------------------------------------------------------------------------
     | Telescope Storage Driver
     |--------------------------------------------------------------------------
     |
@@ -41,13 +15,7 @@ return [
     |
     */
 
-    'driver' => env('TELESCOPE_DRIVER', 'database'),
-
-    'storage' => [
-        'database' => [
-            'connection' => env('DB_CONNECTION', 'mysql'),
-        ],
-    ],
+    'driver' => env('TELESCOPE_DRIVER', 'api'),
 
     /*
     |--------------------------------------------------------------------------
@@ -60,7 +28,7 @@ return [
     |
     */
 
-    'enabled' => env('TELESCOPE_ENABLED', true),
+    'enabled' => env('TELESCOPE_ENABLED', false),
 
     /*
     |--------------------------------------------------------------------------

@@ -15,8 +15,7 @@ use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 class Telescope
 {
-    use ExtractsMailableTags,
-        ListensForStorageOpportunities,
+    use ListensForStorageOpportunities,
         RegistersWatchers;
 
     /**
@@ -55,13 +54,6 @@ class Telescope
     public static $entriesQueue = [];
 
     /**
-     * The list of queued entry updates.
-     *
-     * @var array
-     */
-    public static $updatesQueue = [];
-
-    /**
      * The list of hidden request headers.
      *
      * @var array
@@ -86,20 +78,6 @@ class Telescope
      * @var array
      */
     public static $hiddenResponseParameters = [];
-
-    /**
-     * Indicates if Telescope should ignore events fired by Laravel.
-     *
-     * @var bool
-     */
-    public static $ignoreFrameworkEvents = true;
-
-    /**
-     * Indicates if Telescope should use the dark theme.
-     *
-     * @var bool
-     */
-    public static $useDarkTheme = false;
 
     /**
      * Indicates if Telescope should record entries.
@@ -129,8 +107,6 @@ class Telescope
 
         static::registerWatchers($app);
 
-        static::registerMailableTagExtractor();
-
         if (static::runningApprovedArtisanCommand($app) ||
             static::handlingApprovedRequest($app)
         ) {
@@ -149,10 +125,8 @@ class Telescope
         return $app->runningInConsole() && ! in_array(
             $_SERVER['argv'][1] ?? null,
             array_merge([
-                // 'migrate',
                 'migrate:rollback',
                 'migrate:fresh',
-                // 'migrate:refresh',
                 'migrate:reset',
                 'migrate:install',
                 'package:discover',
@@ -175,7 +149,6 @@ class Telescope
     {
         return ! $app->runningInConsole() && ! $app['request']->is(
             array_merge([
-                config('telescope-client.path').'*',
                 'telescope-api*',
                 'vendor/telescope*',
                 'horizon*',
@@ -191,8 +164,6 @@ class Telescope
      */
     public static function startRecording()
     {
-        app(EntriesRepository::class)->loadMonitoredTags();
-
         static::$shouldRecord = ! cache('telescope:pause-recording');
     }
 
@@ -270,19 +241,6 @@ class Telescope
     }
 
     /**
-     * Record the given entry update.
-     *
-     * @param  \PDFfiller\TelescopeClient\EntryUpdate  $update
-     * @return void
-     */
-    public static function recordUpdate(EntryUpdate $update)
-    {
-        if (static::$shouldRecord) {
-            static::$updatesQueue[] = $update;
-        }
-    }
-
-    /**
      * Record the given entry.
      *
      * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
@@ -302,28 +260,6 @@ class Telescope
     public static function recordCommand(IncomingEntry $entry)
     {
         static::record(EntryType::COMMAND, $entry);
-    }
-
-    /**
-     * Record the given entry.
-     *
-     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
-     * @return void
-     */
-    public static function recordDump(IncomingEntry $entry)
-    {
-        static::record(EntryType::DUMP, $entry);
-    }
-
-    /**
-     * Record the given entry.
-     *
-     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
-     * @return void
-     */
-    public static function recordEvent(IncomingEntry $entry)
-    {
-        static::record(EntryType::EVENT, $entry);
     }
 
     /**
@@ -376,75 +312,9 @@ class Telescope
      * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
      * @return void
      */
-    public static function recordMail(IncomingEntry $entry)
-    {
-        static::record(EntryType::MAIL, $entry);
-    }
-
-    /**
-     * Record the given entry.
-     *
-     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
-     * @return void
-     */
-    public static function recordNotification($entry)
-    {
-        static::record(EntryType::NOTIFICATION, $entry);
-    }
-
-    /**
-     * Record the given entry.
-     *
-     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
-     * @return void
-     */
-    public static function recordQuery(IncomingEntry $entry)
-    {
-        static::record(EntryType::QUERY, $entry);
-    }
-
-    /**
-     * Record the given entry.
-     *
-     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
-     * @return void
-     */
-    public static function recordModelEvent(IncomingEntry $entry)
-    {
-        static::record(EntryType::MODEL, $entry);
-    }
-
-    /**
-     * Record the given entry.
-     *
-     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
-     * @return void
-     */
-    public static function recordRedis(IncomingEntry $entry)
-    {
-        static::record(EntryType::REDIS, $entry);
-    }
-
-    /**
-     * Record the given entry.
-     *
-     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
-     * @return void
-     */
     public static function recordRequest(IncomingEntry $entry)
     {
         static::record(EntryType::REQUEST, $entry);
-    }
-
-    /**
-     * Record the given entry.
-     *
-     * @param  \PDFfiller\TelescopeClient\IncomingEntry  $entry
-     * @return void
-     */
-    public static function recordScheduledCommand(IncomingEntry $entry)
-    {
-        static::record(EntryType::SCHEDULED_TASK, $entry);
     }
 
     /**
@@ -538,7 +408,7 @@ class Telescope
      */
     public static function store(EntriesRepository $storage)
     {
-        if (empty(static::$entriesQueue) && empty(static::$updatesQueue)) {
+        if (empty(static::$entriesQueue)) {
             return;
         }
 
@@ -550,7 +420,6 @@ class Telescope
             $batchId = Str::orderedUuid()->toString();
 
             $storage->store(static::collectEntries($batchId));
-            $storage->update(static::collectUpdates($batchId));
 
             if ($storage instanceof TerminableRepository) {
                 $storage->terminate();
@@ -560,7 +429,6 @@ class Telescope
         }
 
         static::$entriesQueue = [];
-        static::$updatesQueue = [];
     }
 
     /**
@@ -579,114 +447,5 @@ class Telescope
                     $entry->assignEntryPointFromBatch(static::$entriesQueue);
                 }
             });
-    }
-
-    /**
-     * Collect the updated entries for storage.
-     *
-     * @param  string  $batchId
-     * @return \Illuminate\Support\Collection
-     */
-    protected static function collectUpdates($batchId)
-    {
-        return collect(static::$updatesQueue)
-            ->each(function ($entry) use ($batchId) {
-                $entry->change(['updated_batch_id' => $batchId]);
-            });
-    }
-
-    /**
-     * Hide the given request header.
-     *
-     * @param  array  $headers
-     * @return static
-     */
-    public static function hideRequestHeaders(array $headers)
-    {
-        static::$hiddenRequestHeaders = array_merge(
-            static::$hiddenRequestHeaders, $headers
-        );
-
-        return new static;
-    }
-
-    /**
-     * Hide the given request parameters.
-     *
-     * @param  array  $attributes
-     * @return static
-     */
-    public static function hideRequestParameters(array $attributes)
-    {
-        static::$hiddenRequestParameters = array_merge(
-            static::$hiddenRequestParameters, $attributes
-        );
-
-        return new static;
-    }
-
-    /**
-     * Hide the given response parameters.
-     *
-     * @param  array  $attributes
-     * @return static
-     */
-    public static function hideResponseParameters(array $attributes)
-    {
-        static::$hiddenResponseParameters = array_merge(
-            static::$hiddenResponseParameters, $attributes
-        );
-
-        return new static;
-    }
-
-    /**
-     * Specifies that Telescope should record events fired by Laravel.
-     *
-     * @return static
-     */
-    public static function recordFrameworkEvents()
-    {
-        static::$ignoreFrameworkEvents = false;
-
-        return new static;
-    }
-
-    /**
-     * Specifies that Telescope should use the dark theme.
-     *
-     * @return static
-     */
-    public static function night()
-    {
-        static::$useDarkTheme = true;
-
-        return new static;
-    }
-
-    /**
-     * Get the default JavaScript variables for Telescope.
-     *
-     * @return array
-     */
-    public static function scriptVariables()
-    {
-        return [
-            'path' => config('telescope-client.path'),
-            'timezone' => config('app.timezone'),
-            'recording' => ! cache('telescope:pause-recording'),
-        ];
-    }
-
-    /**
-     * Configure Telescope to not register it's migrations.
-     *
-     * @return static
-     */
-    public static function ignoreMigrations()
-    {
-        static::$runsMigrations = false;
-
-        return new static;
     }
 }
