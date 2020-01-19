@@ -29,6 +29,5 @@ Add server parameters to `.env` file
 TELESCOPE_SERVER_BASE_URI=http://0.0.0.0:8001/api/
 TELESCOPE_SERVER_CLIENT_ID=1
 TELESCOPE_SERVER_CLIENT_SECRET=secret
+TELESCOPE_ENABLED=true
 ```
-
-Set `TELESCOPE_ENABLED=true` in `.env`
