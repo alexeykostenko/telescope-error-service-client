@@ -85,8 +85,8 @@ return [
     ],
 
     'server' => [
-        'base_uri'      => env('TELESCOPE_SERVER_BASE_URI'),
-        'client_id'     => env('TELESCOPE_SERVER_CLIENT_ID'),
-        'client_secret' => env('TELESCOPE_SERVER_CLIENT_SECRET'),
+        'base_uri'      => env('TELESCOPE_ERROR_SERVICE_BASE_URI'),
+        'client_id'     => env('TELESCOPE_ERROR_SERVICE_CLIENT_ID'),
+        'client_secret' => env('TELESCOPE_ERROR_SERVICE_CLIENT_SECRET'),
     ],
 ];
