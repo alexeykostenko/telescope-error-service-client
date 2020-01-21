@@ -15,7 +15,7 @@ class InstallCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'telescope-client:install';
+    protected $signature = 'telescope-error-service-client:install';
 
     /**
      * The console command description.
@@ -32,8 +32,8 @@ class InstallCommand extends Command
     public function handle()
     {
         $this->comment('Publishing Telescope Configuration...');
-        $this->callSilent('vendor:publish', ['--tag' => 'telescope-client-config']);
+        $this->callSilent('vendor:publish', ['--tag' => 'telescope-error-service-client-config']);
 
-        $this->info('Telescope client installed successfully.');
+        $this->info('Telescope Error Service Client installed successfully.');
     }
 }

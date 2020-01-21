@@ -101,7 +101,7 @@ class Telescope
      */
     public static function start($app)
     {
-        if (! config('telescope-client.enabled')) {
+        if (! config('telescope-error-service-client.enabled')) {
             return;
         }
 
@@ -135,7 +135,7 @@ class Telescope
                 'horizon',
                 'horizon:work',
                 'horizon:supervisor',
-            ], config('telescope-client.ignoreCommands', []), config('telescope-client.ignore_commands', []))
+            ], config('telescope-error-service-client.ignoreCommands', []), config('telescope-error-service-client.ignore_commands', []))
         );
     }
 
@@ -153,7 +153,7 @@ class Telescope
                 'vendor/telescope*',
                 'horizon*',
                 'vendor/horizon*',
-            ], config('telescope-client.ignore_paths', []))
+            ], config('telescope-error-service-client.ignore_paths', []))
         );
     }
 

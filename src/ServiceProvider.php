@@ -32,8 +32,8 @@ class ServiceProvider extends SupportServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/telescope-client.php' => config_path('telescope-client.php'),
-            ], 'telescope-client-config');
+                __DIR__.'/../config/telescope-error-service-client.php' => config_path('telescope-error-service-client.php'),
+            ], 'telescope-error-service-client-config');
         }
     }
 
@@ -45,7 +45,7 @@ class ServiceProvider extends SupportServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/telescope-client.php', 'telescope-client'
+            __DIR__.'/../config/telescope-error-service-client.php', 'telescope-error-service-client'
         );
 
         $this->registerStorageDriver();
@@ -63,7 +63,7 @@ class ServiceProvider extends SupportServiceProvider
      */
     protected function registerStorageDriver()
     {
-        $driver = config('telescope-client.driver');
+        $driver = config('telescope-error-service-client.driver');
 
         if (method_exists($this, $method = 'register'.ucfirst($driver).'Driver')) {
             $this->$method();
